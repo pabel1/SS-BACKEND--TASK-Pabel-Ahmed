@@ -57,3 +57,26 @@ exports.loginUser = catchAsyncError(async (req, res, next) => {
     message: "Login Successfully!!",
   });
 });
+
+// logout
+exports.logoutController = (req, res) => {
+  res.clearCookie("jwt-token", { httpOnly: true });
+  res.status(200).json({
+    Message: "Successfully logged out",
+    Auhtorization: false,
+  });
+};
+
+//
+// get login user details
+exports.loggedInUser = catchAsyncError(async (req, res, next) => {
+  const id = req.userId;
+  const user = await UserModel.findById(id);
+  if (!user) {
+    return next(new Errorhandeler("User not found", 404));
+  }
+  res.status(200).json({
+    success: true,
+    user,
+  });
+});

@@ -2,10 +2,11 @@ const jwt = require("jsonwebtoken");
 const UserModel = require("../Model/userModel");
 const Errorhandeler = require("../Utility/ErrorHandler");
 const authVerification = async (req, res, next) => {
-  const { authorization } = req.headers;
-  const token = authorization?.split(" ")[1];
+  // const { authorization } = req.headers;
+  // const token = authorization?.split(" ")[1];
+  const token = req.cookies["jwt-token"];
   try {
-    if (!token || !authorization) {
+    if (!token) {
       return next(
         new Errorhandeler("Please login to access the resource", 401)
       );
