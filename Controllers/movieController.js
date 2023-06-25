@@ -80,3 +80,30 @@ exports.getSingleMovie = catchAsyncError(async (req, res, next) => {
     message: "Get Single Movie Successfully!!",
   });
 });
+
+// get update   movie
+exports.getUpdateMovie = catchAsyncError(async (req, res, next) => {
+  if (!req.body) {
+    return next(new Errorhandeler("Please fill the required form"));
+  }
+  let movie = await MovieModel.findById(req.params.id);
+
+  if (!movie) {
+    return next(new Errorhandeler("Not Found!!!", 404));
+  }
+
+  let updateMovie = await MovieModel.findByIdAndUpdate(
+    req.params.id,
+    req.body,
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+
+  res.status(201).json({
+    success: true,
+    updateMovie,
+    message: "Update Movie Successfully!!",
+  });
+});
