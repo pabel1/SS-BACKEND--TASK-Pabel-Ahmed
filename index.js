@@ -2,17 +2,15 @@
 
 const express = require("express");
 
-
 const cors = require("cors");
 const cloudinary = require("cloudinary").v2;
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 
 // internal import
-
-
+// router import
+const allRouter = require("./Router/allRouter");
 const errorMiddleware = require("./Middleware/errorMiddleware");
-
 
 // environment variable setup
 dotenv.config();
@@ -45,8 +43,6 @@ app.use(express.json({ limit: "100mb" }));
 app.use(express.urlencoded({ extended: true, limit: "100mb" }));
 app.use(cors());
 
-
-
 // Handeling Uncaught Exception
 process.on("uncaughtException", (err) => {
   console.log(`Error : ${err.message}`);
@@ -55,7 +51,7 @@ process.on("uncaughtException", (err) => {
 });
 
 // route setup
-
+app.use("/all", allRouter);
 // error middleware
 app.use(errorMiddleware);
 
@@ -72,7 +68,6 @@ app.use(errorHandler);
 // listening port
 const server = app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
-  
 });
 
 // Unhandeled Promise rejection

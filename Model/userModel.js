@@ -2,40 +2,30 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 const userModel = mongoose.Schema(
   {
-    name: {
+    username: {
       type: String,
-      required: [true, "Please enter Employee Name"],
+      required: true,
+      trim: true,
     },
     email: {
       type: String,
       required: true,
       unique: true,
-      validate: [validator.isEmail, "Invalid Email"],
+      match: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
     },
-    photo: {
-      public_id: {
-        type: String,
-        required: true,
-      },
-      url: {
-        type: String,
-        required: true,
-      },
-    },
-    phone: {
-      type: String,
-      length: [11, "Phone number must be 11 digits"],
-      trim: true,
-    },
+
     password: {
       type: String,
       required: true,
+      trim: true,
+      minLength: 6,
     },
     role: {
       type: String,
       required: true,
       enum: ["User", "Admin"],
     },
+
     __v: false,
   },
   { timestamps: true }
