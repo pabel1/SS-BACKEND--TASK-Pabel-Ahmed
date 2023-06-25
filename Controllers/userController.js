@@ -1,6 +1,6 @@
 const catchAsyncError = require("../Middleware/catchAsyncError");
 const UserModel = require("../Model/userModel");
-const { createUser } = require("../Services/userServices");
+const { createUser, login } = require("../Services/userServices");
 const Errorhandeler = require("../Utility/ErrorHandler");
 const bcrypt = require("bcrypt");
 // create user
@@ -35,4 +35,25 @@ exports.SignUpUser = catchAsyncError(async (req, res, next) => {
       message: error.toString(),
     });
   }
+});
+
+// login
+exports.loginUser = catchAsyncError(async (req, res, next) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return next(new Errorhandeler("Please fill the value properly", 400));
+  }
+
+  let login = await login(req);
+
+  if (login.status === false) {
+    return next(new Errorhandeler(user?.error, 400));
+  }
+  res.status(200).json({
+    success: true,
+    user: login?.user,
+    access_token: login?.user,
+    message: "Login Successfully!!",
+  });
 });
