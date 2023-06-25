@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
+const CrewModel = require("./crewModel");
 const movieModel = mongoose.Schema(
   {
     title: {
@@ -7,26 +8,14 @@ const movieModel = mongoose.Schema(
       required: true,
       trim: true,
     },
-    actor: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    actress: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    director: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    producer: {
-      type: String,
-      required: true,
-      trim: true,
-    },
+    crewRef: [
+      {
+        crewMember: {
+          type: mongoose.Schema.Types.ObjectId,
+          required: true,
+        },
+      },
+    ],
     releaseDate: {
       type: Date,
       required: true,
@@ -43,6 +32,11 @@ const movieModel = mongoose.Schema(
     },
     detail: {
       type: String,
+      required: true,
+    },
+    type: {
+      type: String,
+      enum: ["movie", "tv_show"],
       required: true,
     },
     poster: {
